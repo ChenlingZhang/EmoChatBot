@@ -1,53 +1,60 @@
 import streamlit as st
-import openai
-from transformers import pipeline
 
-## web api key = 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
-DEFAULT_SYSTEM_PROMPT = "You are a helpful assistant, you should answer the question correctly."
-emotion_classify = pipeline("sentiment-analysis")
+st.title("Emotion ChatBot")
+
+model_desc = ("DeBERTa: Decoding-enhanced BERT with Disentangled Attention"
+              "DeBERTa improves the BERT and RoBERTa models using disentangled attention"
+              "and enhanced mask decoder. It outperforms BERT and RoBERTa on majority of NLU tasks with 80GB training "
+              "data.")
 
 with st.sidebar:
-    openai_api_key = st.text_input("Open AI Key", key="chat_key", type="password")
-    "[Generate An OpenAI API key](https://platform.openai.com/account/api-keys)"
+    select_models = st.selectbox(
+        "Which model would you like to be use",
+        ("microsoft/deberta-base-mnli",
+         "bart-large-mnli")
+    )
+    if select_models == "bart-large-mnli":
+        model_desc = (
+            "Bart-large-mnli is a transformer model developed by Facebook that can perform natural language generation,"
+            "translation, and comprehension tasks. It is based on the BART architecture, which combines a bidirectional"
+            "encoder and a causal decoder, and it is fine-tuned on the MultiNLI (MNLI) dataset, which is a collection "
+            "of"
+            "sentence pairs annotated with natural language inference labels1. You can use this model for zero-shot "
+            "text classification,"
+            "which is the task of assigning labels to text without any training data2.")
 
-st.title("Emotion Chatbot")
-if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you today?"}]
+    st.markdown("### Model Descriptions")
+    st.markdown(model_desc)
 
-for msg in st.session_state.messages:
-    st.chat_message(msg["role"]).write(msg["content"])
+# 此处需要将用户选择的model传入 模型选择器
+current_model = select_models
 
-if user_prompt := st.chat_input():
-    if not openai_api_key:
-        st.info("Please enter a valid api key to continue")
-        st.stop()
-
-    emo_label = emotion_classify(user_prompt)[0]["label"]
-
-    if emo_label == 'NEGATIVE':
-        print("negative emotion detacted")
-        adjusted_system_prompt = (
-            f'You are a helpful assistant, you should answer the question correctly,'
-            f' also provide some advice for {emo_label} emotion start with "I think you are feeling {emo_label},'
-            f'here are some suggestions for you"'
-        )
-    else:
-        adjusted_system_prompt = DEFAULT_SYSTEM_PROMPT
-
-    openai.api_key = openai_api_key
-    st.session_state.messages.append({"role": "user", "content": user_prompt})
-    st.chat_message("user").write(user_prompt)
-
-    # Construct history messages including the adjusted system prompt
-    history = [
-        {"role": msg["role"], "content": msg["content"]} for msg in st.session_state.messages
+# store llm generate response
+if "messages" not in st.session_state.keys():
+    st.session_state.messages = [
+        {
+            "role": "assistant",
+            "content": "How may I help you"
+        }
     ]
 
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=history
-    )
+# Display chat messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.write(message["content"])
 
-    response_msg = response.choices[0].message
-    st.session_state.messages.append({"role": "assistant", "content": response_msg["content"]})
-    st.chat_message("assistant").write(response_msg["content"])
+# user provide prompt
+if user_prompt := st.chat_input():
+    st.session_state.messages.append({"role": "user", "content": user_prompt})
+    with st.chat_message("user"):
+        st.write(user_prompt)
+
+# Generate Model Response
+if st.session_state.messages[-1]["role"] != "assistant":
+    with st.chat_message("assistant"):
+        with st.spinner("Thinking..."):
+            # TODO: 完成generate_response()方法接入Llama2 以及对应分类模型
+            response = "Function is still working on it"
+            st.write(response)
+    message = {"role": "assistant", "content": response}
+    st.session_state.messages.append(message)
