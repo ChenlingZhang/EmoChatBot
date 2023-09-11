@@ -1,1 +1,5 @@
-streamlit
+streamlit~=1.26.0
+torch~=2.0.1
+transformers~=4.33.1
+accelerate
+huggingface_hub

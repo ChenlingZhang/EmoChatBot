@@ -1,4 +1,5 @@
 import streamlit as st
+import models
 
 st.title("Emotion ChatBot")
 
@@ -44,7 +45,10 @@ for message in st.session_state.messages:
         st.write(message["content"])
 
 # user provide prompt
-if user_prompt := st.chat_input():
+if not models.isCudaAvaliable():
+    st.error("This application should run based on GPU, check your devices")
+
+if user_prompt := st.chat_input(disabled=not models.isCudaAvaliable()):
     st.session_state.messages.append({"role": "user", "content": user_prompt})
     with st.chat_message("user"):
         st.write(user_prompt)
@@ -53,8 +57,7 @@ if user_prompt := st.chat_input():
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            # TODO: 完成generate_response()方法接入Llama2 以及对应分类模型
-            response = "Function is still working on it"
+            response = models.generate_response(user_prompt, model_name=current_model)
             st.write(response)
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)
