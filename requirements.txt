@@ -1,5 +1,5 @@
-streamlit~=1.26.0
-torch~=2.0.1
-transformers~=4.33.1
+streamlit
+torch
+transformers
 accelerate
 huggingface_hub

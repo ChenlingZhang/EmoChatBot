@@ -9,10 +9,12 @@ model_desc = ("DeBERTa: Decoding-enhanced BERT with Disentangled Attention"
               "data.")
 
 with st.sidebar:
+    st.markdown("### Choose your model")
     select_models = st.selectbox(
         "Which model would you like to be use",
-        ("microsoft/deberta-base-mnli",
-         "bart-large-mnli")
+        ("sileod/deberta-v3-base-tasksource-nli",
+         "bart-large-mnli",
+         "microsoft/deberta-base-mnli")
     )
     if select_models == "bart-large-mnli":
         model_desc = (
