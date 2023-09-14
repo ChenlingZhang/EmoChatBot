@@ -5,7 +5,9 @@ from huggingface_hub import login
 import torch
 import logging
 
-logging.basicConfig(filename='./logs/running_log.log', filemode="w", format="%(asctime)s %(name)s:%(levelname)s:%(message)s", datefmt="%d-%M-%Y %H:%M:%S", level=logging.INFO)
+logging.basicConfig(filename='./logs/running_log.log', filemode="w",
+                    format="%(asctime)s %(name)s:%(levelname)s:%(message)s", datefmt="%d-%M-%Y %H:%M:%S",
+                    level=logging.INFO)
 
 login(token="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")
 
@@ -49,23 +51,26 @@ def emotion_classify(model_name, user_prompt):
         logging.info(f"/f current classify model {model_name}, emotion label {emotion_label}")
         return emotion_label
 
-    if model_name == "bart-large-mnli":
+    elif model_name == "bart-large-mnli":
         text = user_prompt
         prediction = bart_model_classifier(text, candidate_labels=emotion_labels)
         emotion_label = prediction['labels'][0]
         logging.info(f"current classify model {model_name}, emotion label {emotion_label}")
         return emotion_label
 
-    if model_name == "sileod/deberta-v3-base-tasksource-nli":
+    elif model_name == "sileod/deberta-v3-base-tasksource-nli":
         text = user_prompt
         prediction = debart_model_classifier(text, candidate_labels=emotion_labels)
         emotion_label = prediction['labels'][0]
         logging.info(f"/f current classify model {model_name}, emotion label {emotion_label}")
         return emotion_label
 
+    else:
+        logging.info(f"no matches model")
+
 
 def get_sys_prompt(user_prompt, model_name):
-    emotion_label = emotion_classify(user_prompt, model_name)
+    emotion_label = emotion_classify(model_name, user_prompt)
     logging.info(f'current emotion label {emotion_label}')
     good_emotion_list = ['nature', 'happy']
     if emotion_label not in good_emotion_list:
@@ -79,6 +84,7 @@ def get_sys_prompt(user_prompt, model_name):
     else:
         DEFAULT_SYS_PROMPUT = f"You are a helpful assistant, you should answer the question {user_prompt} correctly."
         logging.info(f"current prompt {DEFAULT_SYS_PROMPUT}")
+
 
 def generate_response(user_prompt, model_name):
     prompt = get_sys_prompt(user_prompt, model_name)
