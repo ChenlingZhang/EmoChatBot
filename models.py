@@ -3,6 +3,10 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, Auto
 from threading import Thread
 from huggingface_hub import login
 import torch
+import logging
+logging.basicConfig(filename='/log/running_log.txt',
+                     format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s-%(funcName)s',
+                     level=logging.ERROR)
 
 login(token="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")
 
@@ -42,18 +46,21 @@ def emotion_classify(model_name, user_prompt):
         text = user_prompt
         prediction = mdebart_model_classifier(text, candidate_labels=emotion_labels)
         emotion_label = prediction['labels'][0]
+        logging.info(f"/f current classify model {model_name}, emotion label {emotion_label}")
         return emotion_label
 
     if model_name == "bart-large-mnli":
         text = user_prompt
         prediction = bart_model_classifier(text, candidate_labels=emotion_labels)
         emotion_label = prediction['labels'][0]
+        logging.info(f"current classify model {model_name}, emotion label {emotion_label}")
         return emotion_label
 
     if model_name == "sileod/deberta-v3-base-tasksource-nli":
         text = user_prompt
         prediction = debart_model_classifier(text, candidate_labels=emotion_labels)
         emotion_label = prediction['labels'][0]
+        logging.info(f"/f current classify model {model_name}, emotion label {emotion_label}")
         return emotion_label
 
 
@@ -66,10 +73,11 @@ def get_sys_prompt(user_prompt, model_name):
             f' also provide some advice for {emotion_label} emotion start with "I think you are feeling {emotion_label},'
             f'here are some suggestions for you"'
         )
+        logging.info(f"current prompt {DEFAULT_SYS_PROMPUT}")
         return DEFAULT_SYS_PROMPUT
     else:
         DEFAULT_SYS_PROMPUT = f"You are a helpful assistant, you should answer the question {user_prompt} correctly."
-
+        logging.info(f"current prompt {DEFAULT_SYS_PROMPUT}")
 
 def generate_response(user_prompt, model_name):
     prompt = get_sys_prompt(user_prompt, model_name)
