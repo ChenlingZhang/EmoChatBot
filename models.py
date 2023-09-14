@@ -5,7 +5,7 @@ from huggingface_hub import login
 import torch
 import logging
 
-logging.basicConfig(filename='./logs/running_log.log', filemode="w", format="%(asctime)s %(name)s:%(levelname)s:%(message)s", datefmt="%d-%M-%Y %H:%M:%S", level=logging.DEBUG)
+logging.basicConfig(filename='./logs/running_log.log', filemode="w", format="%(asctime)s %(name)s:%(levelname)s:%(message)s", datefmt="%d-%M-%Y %H:%M:%S", level=logging.INFO)
 
 login(token="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")
 
