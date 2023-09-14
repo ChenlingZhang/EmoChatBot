@@ -71,7 +71,7 @@ def get_sys_prompt(user_prompt, model_name):
         DEFAULT_SYS_PROMPUT = (
             f'You are a helpful assistant, you should answer the question {user_prompt} correctly,'
             f' also provide some advice for {emotion_label} emotion start with I think you are feeling {emotion_label},'
-            f'here are some suggestions for you"'
+            f'here are some suggestions for you'
         )
         logging.info(f"current prompt {DEFAULT_SYS_PROMPUT}")
         return DEFAULT_SYS_PROMPUT
