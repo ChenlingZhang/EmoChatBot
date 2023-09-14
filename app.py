@@ -4,6 +4,7 @@ import logging
 import models
 
 st.title("Emotion ChatBot")
+DEFAULT_SYS_PROMPUT = "You are a helpful assistant, you should answer the question correctly."
 
 model_desc = ("DeBERTa: Decoding-enhanced BERT with Disentangled Attention"
               "DeBERTa improves the BERT and RoBERTa models using disentangled attention"
@@ -62,7 +63,8 @@ if user_prompt := st.chat_input(disabled=not torch.cuda.is_available()):
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = models.generate_response(user_prompt, model_name=current_model)
+            response = models.generate_response(user_prompt,model_name=current_model,chat_history=st.session_state.messages)
             st.write(response)
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)
+
