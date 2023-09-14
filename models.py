@@ -4,9 +4,8 @@ from threading import Thread
 from huggingface_hub import login
 import torch
 import logging
-logging.basicConfig(filename='./logs/running_log.log',
-                     format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s-%(funcName)s',
-                     level=logging.ERROR)
+
+logging.basicConfig(filename='./logs/running_log.log', filemode="w", format="%(asctime)s %(name)s:%(levelname)s:%(message)s", datefmt="%d-%M-%Y %H:%M:%S", level=logging.DEBUG)
 
 login(token="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")
 
