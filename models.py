@@ -65,11 +65,12 @@ def emotion_classify(model_name, user_prompt):
 
 def get_sys_prompt(user_prompt, model_name):
     emotion_label = emotion_classify(user_prompt, model_name)
+    logging.info(f'current emotion label {emotion_label}')
     good_emotion_list = ['nature', 'happy']
     if emotion_label not in good_emotion_list:
         DEFAULT_SYS_PROMPUT = (
             f'You are a helpful assistant, you should answer the question {user_prompt} correctly,'
-            f' also provide some advice for {emotion_label} emotion start with "I think you are feeling {emotion_label},'
+            f' also provide some advice for {emotion_label} emotion start with I think you are feeling {emotion_label},'
             f'here are some suggestions for you"'
         )
         logging.info(f"current prompt {DEFAULT_SYS_PROMPUT}")
