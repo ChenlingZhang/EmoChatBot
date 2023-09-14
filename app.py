@@ -1,4 +1,6 @@
 import streamlit as st
+import torch
+
 import models
 
 st.title("Emotion ChatBot")
@@ -47,10 +49,10 @@ for message in st.session_state.messages:
         st.write(message["content"])
 
 # user provide prompt
-if not models.isCudaAvaliable():
-    st.error("This application should run based on GPU, check your devices")
+if not torch.cuda.is_available():
+    st.error("Running on CPU 🥶 This demo does not work on CPU.")
 
-if user_prompt := st.chat_input(disabled=not models.isCudaAvaliable()):
+if user_prompt := st.chat_input(disabled=not torch.cuda.is_available()):
     st.session_state.messages.append({"role": "user", "content": user_prompt})
     with st.chat_message("user"):
         st.write(user_prompt)

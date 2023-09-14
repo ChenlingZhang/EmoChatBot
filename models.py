@@ -2,14 +2,9 @@ from transformers import pipeline
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoModelForCausalLM, TextIteratorStreamer
 from threading import Thread
 from huggingface_hub import login
-import logging
 import torch
 
-logging.basicConfig(filename="../EmoChatBot/logs/running_log.log", filemode="w", format="%(asctime)s %(name)s:%(levelname)s:%(message)s",
-                    datefmt="%d-%M-%Y %H:%M:%S", level=logging.DEBUG)
-
 login(token="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")
-logging.info("Suceess login to hugging face")
 
 debart_model_name = "sileod/deberta-v3-base-tasksource-nli"
 bart_model_name = "facebook/bart-large-mnli"
@@ -44,33 +39,21 @@ else:
     model = None
 llama_model_tokenizer = AutoTokenizer.from_pretrained(llama_model_id)
 
-
-def isCudaAvaliable() -> bool:
-    if model is None:
-        logging.warning("User now running on a cpu mode")
-        return False
-    else:
-        return True
-
-
 def emotion_classify(model_name, user_prompt):
     emotion_labels = ["natural", "happy", "sad", "anger", "hate"]
     if model_name == "microsoft/deberta-base-mnli":
-        logging.info(f"User choose /f{model_name} as a prediction model")
         text = user_prompt
         prediction = mdebart_model_classifier(text, candidate_labels=emotion_labels)
         emotion_label = prediction['labels'][0]
         return emotion_label
 
     if model_name == "bart-large-mnli":
-        logging.info(f"User choose /f{model_name} as a prediction model")
         text = user_prompt
         prediction = bart_model_classifier(text, candidate_labels=emotion_labels)
         emotion_label = prediction['labels'][0]
         return emotion_label
 
     if model_name == "sileod/deberta-v3-base-tasksource-nli":
-        logging.info(f"User choose /f{model_name} as a prediction model")
         text = user_prompt
         prediction = debart_model_classifier(text, candidate_labels=emotion_labels)
         emotion_label = prediction['labels'][0]
@@ -93,10 +76,8 @@ def get_sys_prompt(user_prompt, model_name):
                                "information."
                                f"also when you answer the question you should care about \f{emotion_label} emotion, "
                                f"provide some advices. here is the question\f{user_prompt}")
-        logging.info("Negative Emotion, using special system prompt")
         return DEFAULT_SYS_PROMPUT
     else:
-        logging.info("Positive Emotion, using default system prompt")
         DEFAULT_SYS_PROMPUT = ("You are a helpful, respectful and honest assistant. Always answer as helpfully as "
                                "possible,"
                                "while being safe.  Your answers should not include any harmful, unethical, racist, "

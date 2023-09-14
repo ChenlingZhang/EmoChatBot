@@ -10,3 +10,5 @@
 12-54-2023 17:54:53 urllib3.connectionpool:DEBUG:https://huggingface.co:443 "HEAD /meta-llama/Llama-2-7b-chat-hf/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
 12-54-2023 17:54:53 root:WARNING:User now running on a cpu mode
 12-54-2023 17:54:53 root:WARNING:User now running on a cpu mode
+12-58-2023 17:58:28 root:WARNING:User now running on a cpu mode
+12-58-2023 17:58:28 root:WARNING:User now running on a cpu mode
