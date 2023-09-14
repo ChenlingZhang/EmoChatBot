@@ -4,7 +4,7 @@ from threading import Thread
 from huggingface_hub import login
 import torch
 import logging
-logging.basicConfig(filename='/log/running_log.txt',
+logging.basicConfig(filename='./logs/running_log.log',
                      format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s-%(funcName)s',
                      level=logging.ERROR)
 
