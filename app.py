@@ -1,6 +1,6 @@
 import streamlit as st
 import torch
-
+import logging
 import models
 
 st.title("Emotion ChatBot")
@@ -33,6 +33,7 @@ with st.sidebar:
 
 # 此处需要将用户选择的model传入 模型选择器
 current_model = select_models
+logging.info(f"current_classify_model {current_model}")
 
 # store llm generate response
 if "messages" not in st.session_state.keys():

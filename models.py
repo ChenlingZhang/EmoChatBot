@@ -40,6 +40,7 @@ llama_model_tokenizer = AutoTokenizer.from_pretrained(llama_model_id)
 
 
 def emotion_classify(model_name, user_prompt):
+    logging.info(f"Start create emotion label with mode {model_name}")
     emotion_labels = ["natural", "happy", "sad", "anger", "hate"]
     if model_name == "microsoft/deberta-base-mnli":
         text = user_prompt
