@@ -22,11 +22,7 @@ bart_model_classifier = pipeline("zero-shot-classification", model=bart_model, t
 debart_model_classifier = pipeline("zero-shot-classification", model=debart_model, tokenizer=debart_tokenizer)
 mdebart_model_classifier = pipeline("zero-shot-classification", model=debart_model, tokenizer=debart_tokenizer)
 
-DEFAULT_SYS_PROMPUT = """ \ You are a helpful, respectful and honest assistant. Always answer as helpfully as 
-possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, 
-dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature. If a 
-question does not make any sense, or is not factually coherent, explain why instead of answering something not 
-correct. If you don't know the answer to a question, please don't share false information."""
+DEFAULT_SYS_PROMPUT = "You are a helpful assistant, you should answer the question correctly."
 
 llama_model_id = "meta-llama/Llama-2-7b-chat-hf"
 if torch.cuda.is_available():
@@ -38,6 +34,7 @@ if torch.cuda.is_available():
 else:
     model = None
 llama_model_tokenizer = AutoTokenizer.from_pretrained(llama_model_id)
+
 
 def emotion_classify(model_name, user_prompt):
     emotion_labels = ["natural", "happy", "sad", "anger", "hate"]
@@ -64,31 +61,14 @@ def get_sys_prompt(user_prompt, model_name):
     emotion_label = emotion_classify(user_prompt, model_name)
     good_emotion_list = ['nature', 'happy']
     if emotion_label not in good_emotion_list:
-        DEFAULT_SYS_PROMPUT = ("You are a helpful, respectful and honest assistant. Always answer as helpfully as "
-                               "possible,"
-                               "while being safe.  Your answers should not include any harmful, unethical, racist, "
-                               "sexist, toxic,"
-                               "dangerous, or illegal content. Please ensure that your responses are socially "
-                               "unbiased and positive in nature. If a"
-                               "question does not make any sense, or is not factually coherent, explain why instead "
-                               "of answering something not"
-                               "correct. If you don't know the answer to a question, please don't share false "
-                               "information."
-                               f"also when you answer the question you should care about \f{emotion_label} emotion, "
-                               f"provide some advices. here is the question\f{user_prompt}")
+        DEFAULT_SYS_PROMPUT = (
+            f'You are a helpful assistant, you should answer the question {user_prompt} correctly,'
+            f' also provide some advice for {emotion_label} emotion start with "I think you are feeling {emotion_label},'
+            f'here are some suggestions for you"'
+        )
         return DEFAULT_SYS_PROMPUT
     else:
-        DEFAULT_SYS_PROMPUT = ("You are a helpful, respectful and honest assistant. Always answer as helpfully as "
-                               "possible,"
-                               "while being safe.  Your answers should not include any harmful, unethical, racist, "
-                               "sexist, toxic,"
-                               "dangerous, or illegal content. Please ensure that your responses are socially "
-                               "unbiased and positive in nature. If a"
-                               "question does not make any sense, or is not factually coherent, explain why instead "
-                               "of answering something not"
-                               "correct. If you don't know the answer to a question, please don't share false "
-                               "information."
-                               f"here is the question\f{user_prompt}")
+        DEFAULT_SYS_PROMPUT = f"You are a helpful assistant, you should answer the question {user_prompt} correctly."
 
 
 def generate_response(user_prompt, model_name):
