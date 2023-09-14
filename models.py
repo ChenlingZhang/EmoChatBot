@@ -107,7 +107,9 @@ def get_prompt(user_prompt: str, chat_history, model_name) -> str:
         texts.append(f'{user_input} [/INST] {responses.strip()} </s><s>[INST] ')
     user_prompt = user_prompt.strip() if do_strip else user_prompt
     texts.append(f'{user_prompt} [/INST]')
-    return ''.join(texts)
+    result = ''.join(texts)
+    logging.info(f"current full prompt:{result}")
+    return result
 
 
 def generate_response(user_prompt, model_name, chat_history):
