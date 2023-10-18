@@ -102,8 +102,9 @@ def get_prompt(user_prompt: str, chat_history, model_name) -> str:
         texts.append(f'{user_input} [/INST] {responses.strip()} </s><s>[INST] ')
     user_prompt = user_prompt.strip() if do_strip else user_prompt
     texts.append(f'{user_prompt} [/INST]')
-    result = 'You take on the role of a mental health assistant.Your work environment is within the campus'.join(texts)
-    logging.info(f"current full prompt:{result}")
+    result = ''.join(texts)
+    full_result = "You take on the role of a mental health assistant. Your work environment is within the campus" + result
+    logging.info(f"current full prompt:{full_result}")
     return result
 
 
