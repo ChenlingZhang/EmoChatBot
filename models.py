@@ -75,23 +75,18 @@ def get_sys_prompt(user_prompt, model_name)-> str:
     good_emotion_list = ['nature', 'happy']
     if emotion_label not in good_emotion_list:
         DEFAULT_SYS_PROMPUT = (
-            f"You are a helpful, respectful, honest assistant and care about huamn's {emotion_label} emotion. "
-            f"Always answer as helpfully as possible, while being safe.  "
-            f"Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous,"
-            f" or illegal content. "
-            f"Please ensure that your responses are socially unbiased and positive in nature.If a question does not "
-            f"make any sense, or is not factually coherent, explain why instead of answering something not correct. If "
-            f"you don't know the answer to a question, please don't share false information. "
-            f"also provide some advice to avoid {emotion_label} emotion"
+           f" Assist users in gaining a deeper understanding of and coming to terms with {emotion_label}"
+           f" Analyze the factors contributing to {emotion_label}"
+           f" demonstrating empathy for the user's emotional state"
+           f" You can draw inspiration from cognitive behavioral therapy"
+           f"combine it with your own expertise as a professional psychologist"
         )
         logging.info(f"current prompt {DEFAULT_SYS_PROMPUT}")
         return DEFAULT_SYS_PROMPUT
     else:
         DEFAULT_SYS_PROMPUT = (
-            f"You are a helpful, respectful, honest assistant and care about huamn's {emotion_label} emotion. "
-            f"Always answer as helpfully as possible, while being safe.  "
-            f"Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous,"
-            f" or illegal content. ")
+            f"Pay attention to understanding people's {emotion_label} in guided "
+            f"conversations to help define problems and generate solutions.")
 
     return DEFAULT_SYS_PROMPUT
 
@@ -107,7 +102,7 @@ def get_prompt(user_prompt: str, chat_history, model_name) -> str:
         texts.append(f'{user_input} [/INST] {responses.strip()} </s><s>[INST] ')
     user_prompt = user_prompt.strip() if do_strip else user_prompt
     texts.append(f'{user_prompt} [/INST]')
-    result = ''.join(texts)
+    result = 'You take on the role of a mental health assistant.Your work environment is within the campus'.join(texts)
     logging.info(f"current full prompt:{result}")
     return result
 
