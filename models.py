@@ -103,7 +103,8 @@ def get_prompt(user_prompt: str, chat_history, model_name) -> str:
     user_prompt = user_prompt.strip() if do_strip else user_prompt
     texts.append(f'{user_prompt} [/INST]')
     result = ''.join(texts)
-    full_result = "You take on the role of a mental health assistant. Your work environment is within the campus" + result
+    full_result = ("You take on the role of a mental health assistant. Your work environment is within the campus. "
+                   "Please note that this conversation should be in a multi-turn question-and-answer format") + result
     logging.info(f"current full prompt:{full_result}")
     return result
 
@@ -122,7 +123,7 @@ def generate_response(user_prompt, model_name, chat_history):
         do_sample=True,
         top_p=0.95,
         top_k=50,
-        temperature=0.8,
+        temperature=1.25,
         num_beams=1,
     )
     t = Thread(target=model.generate, kwargs=generate_kwargs)
