@@ -90,7 +90,7 @@ def get_sys_prompt(user_prompt, model_name)-> str:
             f"You take on the role of a mental health assistant. Your work environment is within the campus. \
            Please note that this conversation should be in a multi-turn question-and-answer format\
            Pay attention to understanding people's {emotion_label} in guided\
-           conversations to help define problems and generate solutions.")
+           conversations to help define problemsgi and generate solutions.")
 
     return DEFAULT_SYS_PROMPUT
 
