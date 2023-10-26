@@ -52,13 +52,13 @@ def emotion_classify(user_prompt):
     predict2 = bart_model_classifier(user_prompt, candidate_labels=emotion_labels)
     predict3 = debart_model_classifier(user_prompt, candidate_labels=emotion_labels)
 
-    logging.info(f'predict1: {predict1[0]}')
-    logging.info(f'predict2: {predict2[0]}')
-    logging.info(f'predict3: {predict3[0]}')
+    logging.info(f"predict1: {predict1['labels'][0]}")
+    logging.info(f"predict2: {predict2['labels'][0]}")
+    logging.info(f"predict3: {predict3['labels'][0]}")
 
-    predict_list.append(predict1[0])
-    predict_list.append(predict2[0])
-    predict_list.append(predict3[0])
+    predict_list.append(predict1['labels'][0])
+    predict_list.append(predict2['labels'][0])
+    predict_list.append(predict3['labels'][0])
 
     for label in predict_list:
         if label != 'happy':
