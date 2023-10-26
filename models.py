@@ -48,9 +48,13 @@ def emotion_classify(user_prompt):
     count_sad = 0
     count_happy = 0
 
-    predict_list.append(mdebart_model_classifier(user_prompt, candidate_labels=emotion_labels)[0])
-    predict_list.append(bart_model_classifier(user_prompt, candidate_labels=emotion_labels)[0])
-    predict_list.append(debart_model_classifier(user_prompt, candidate_labels=emotion_labels)[0])
+    predict1 = mdebart_model_classifier(user_prompt, candidate_labels=emotion_labels)[0]
+    predict2 = bart_model_classifier(user_prompt, candidate_labels=emotion_labels)[0]
+    predict3 = debart_model_classifier(user_prompt, candidate_labels=emotion_labels)[0]
+
+    predict_list.append(predict1)
+    predict_list.append(predict2)
+    predict_list.append(predict3)
 
     for label in predict_list:
         if label != 'happy':
