@@ -75,18 +75,22 @@ def get_sys_prompt(user_prompt, model_name)-> str:
     good_emotion_list = ['nature', 'happy']
     if emotion_label not in good_emotion_list:
         DEFAULT_SYS_PROMPUT = (
-           f" Assist users in gaining a deeper understanding of and coming to terms with {emotion_label}"
-           f" Analyze the factors contributing to {emotion_label}"
-           f" demonstrating empathy for the user's emotional state"
-           f" You can draw inspiration from cognitive behavioral therapy"
-           f"combine it with your own expertise as a professional psychologist"
+           f" You take on the role of a mental health assistant. Your work environment is within the campus. \
+           Please note that this conversation should be in a multi-turn question-and-answer format\
+           Assist users in gaining a deeper understanding of and coming to terms with {emotion_label}\
+           Analyze the factors contributing to {emotion_label}\
+           demonstrating empathy for the user's emotional state\
+           You can draw inspiration from cognitive behavioral therapy\
+           combine it with your own expertise as a professional psychologist"
         )
         logging.info(f"current prompt {DEFAULT_SYS_PROMPUT}")
         return DEFAULT_SYS_PROMPUT
     else:
         DEFAULT_SYS_PROMPUT = (
-            f"Pay attention to understanding people's {emotion_label} in guided "
-            f"conversations to help define problems and generate solutions.")
+            f"You take on the role of a mental health assistant. Your work environment is within the campus. \
+           Please note that this conversation should be in a multi-turn question-and-answer format\
+           Pay attention to understanding people's {emotion_label} in guided\
+           conversations to help define problems and generate solutions.")
 
     return DEFAULT_SYS_PROMPUT
 
@@ -103,9 +107,7 @@ def get_prompt(user_prompt: str, chat_history, model_name) -> str:
     user_prompt = user_prompt.strip() if do_strip else user_prompt
     texts.append(f'{user_prompt} [/INST]')
     result = ''.join(texts)
-    full_result = ("You take on the role of a mental health assistant. Your work environment is within the campus. "
-                   "Please note that this conversation should be in a multi-turn question-and-answer format") + result
-    logging.info(f"current full prompt:{full_result}")
+    logging.info(f"current full prompt:{result}")
     return result
 
 
