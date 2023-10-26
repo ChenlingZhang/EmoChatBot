@@ -41,39 +41,59 @@ else:
 llama_model_tokenizer = AutoTokenizer.from_pretrained(llama_model_id)
 
 
-def emotion_classify(model_name, user_prompt):
-    logging.info(f"Start create emotion label with mode {model_name}")
+def emotion_classify(user_prompt):
+    # logging.info(f"Start create emotion label with mode {model_name}")
     emotion_labels = ["natural", "happy", "sad", "anger", "hate"]
-    if model_name == "microsoft/deberta-base-mnli":
-        text = user_prompt
-        prediction = mdebart_model_classifier(text, candidate_labels=emotion_labels)
-        emotion_label = prediction['labels'][0]
-        logging.info(f"/f current classify model {model_name}, emotion label {emotion_label}")
-        return emotion_label
+    predict_list = []
+    count_sad = 0
+    count_happy = 0
 
-    elif model_name == "bart-large-mnli":
-        text = user_prompt
-        prediction = bart_model_classifier(text, candidate_labels=emotion_labels)
-        emotion_label = prediction['labels'][0]
-        logging.info(f"current classify model {model_name}, emotion label {emotion_label}")
-        return emotion_label
+    predict_list.append(mdebart_model_classifier(user_prompt, candidate_labels=emotion_labels)[0])
+    predict_list.append(bart_model_classifier(user_prompt, candidate_labels=emotion_labels)[0])
+    predict_list.append(debart_model_classifier(user_prompt, candidate_labels=emotion_labels)[0])
 
-    elif model_name == "sileod/deberta-v3-base-tasksource-nli":
-        text = user_prompt
-        prediction = debart_model_classifier(text, candidate_labels=emotion_labels)
-        emotion_label = prediction['labels'][0]
-        logging.info(f"/f current classify model {model_name}, emotion label {emotion_label}")
-        return emotion_label
+    for label in predict_list:
+        if label != 'happy':
+            count_sad += 1
+        else:
+            count_happy += 1
 
+    if count_sad >= count_happy:
+        return 'negative emotion'
     else:
-        logging.info(f"no matches model")
+        return 'positive emotion'
 
 
-def get_sys_prompt(user_prompt, model_name)-> str:
-    emotion_label = emotion_classify(model_name, user_prompt)
+    # if model_name == "microsoft/deberta-base-mnli":
+    #     text = user_prompt
+    #     prediction = mdebart_model_classifier(text, candidate_labels=emotion_labels)
+    #     emotion_label = prediction['labels'][0]
+    #     logging.info(f"/f current classify model {model_name}, emotion label {emotion_label}")
+    #     return emotion_label
+    #
+    # elif model_name == "bart-large-mnli":
+    #     text = user_prompt
+    #     prediction = bart_model_classifier(text, candidate_labels=emotion_labels)
+    #     emotion_label = prediction['labels'][0]
+    #     logging.info(f"current classify model {model_name}, emotion label {emotion_label}")
+    #     return emotion_label
+    #
+    # elif model_name == "sileod/deberta-v3-base-tasksource-nli":
+    #     text = user_prompt
+    #     prediction = debart_model_classifier(text, candidate_labels=emotion_labels)
+    #     emotion_label = prediction['labels'][0]
+    #     logging.info(f"/f current classify model {model_name}, emotion label {emotion_label}")
+    #     return emotion_label
+    #
+    # else:
+    #     logging.info(f"no matches model")
+
+
+def get_sys_prompt(user_prompt) -> str:
+    emotion_label = emotion_classify(user_prompt)
     logging.info(f'current emotion label {emotion_label}')
-    good_emotion_list = ['nature', 'happy']
-    if emotion_label not in good_emotion_list:
+    # good_emotion_list = ['nature', 'happy']
+    if emotion_label != "positive emotion":
         DEFAULT_SYS_PROMPUT = (
            f" You take on the role of a mental health assistant. Your work environment is within the campus. \
            Please note that this conversation should be in a multi-turn question-and-answer format\
@@ -95,8 +115,8 @@ def get_sys_prompt(user_prompt, model_name)-> str:
     return DEFAULT_SYS_PROMPUT
 
 
-def get_prompt(user_prompt: str, chat_history, model_name) -> str:
-    system_prompt = get_sys_prompt(user_prompt, model_name)
+def get_prompt(user_prompt: str, chat_history) -> str:
+    system_prompt = get_sys_prompt(user_prompt)
     texts = [f'<s>[INST] <<SYS>>\n{system_prompt}\n<</SYS>>\n\n']
     # The first user input is _not_ stripped
     do_strip = False
@@ -111,8 +131,8 @@ def get_prompt(user_prompt: str, chat_history, model_name) -> str:
     return result
 
 
-def generate_response(user_prompt, model_name, chat_history):
-    prompt = get_prompt(user_prompt, chat_history, model_name)
+def generate_response(user_prompt, chat_history):
+    prompt = get_prompt(user_prompt, chat_history)
     inputs = llama_model_tokenizer([prompt], return_tensors='pt', add_special_tokens=False).to('cuda')
     streamer = TextIteratorStreamer(llama_model_tokenizer,
                                     timeout=10.,
