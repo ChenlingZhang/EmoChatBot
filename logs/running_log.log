@@ -1,9 +1,0 @@
-14-40-2023 14:40:05 urllib3.connectionpool:DEBUG:Starting new HTTPS connection (1): huggingface.co:443
-14-40-2023 14:40:05 urllib3.connectionpool:DEBUG:https://huggingface.co:443 "GET /api/whoami-v2 HTTP/1.1" 200 819
-14-40-2023 14:40:05 urllib3.connectionpool:DEBUG:https://huggingface.co:443 "HEAD /sileod/deberta-v3-base-tasksource-nli/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
-14-40-2023 14:40:05 urllib3.connectionpool:DEBUG:https://huggingface.co:443 "HEAD /facebook/bart-large-mnli/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
-14-40-2023 14:40:06 urllib3.connectionpool:DEBUG:https://huggingface.co:443 "HEAD /microsoft/deberta-base-mnli/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
-14-40-2023 14:40:06 urllib3.connectionpool:DEBUG:https://huggingface.co:443 "HEAD /facebook/bart-large-mnli/resolve/main/config.json HTTP/1.1" 200 0
-14-40-2023 14:40:11 urllib3.connectionpool:DEBUG:https://huggingface.co:443 "HEAD /sileod/deberta-v3-base-tasksource-nli/resolve/main/config.json HTTP/1.1" 200 0
-14-40-2023 14:40:14 urllib3.connectionpool:DEBUG:https://huggingface.co:443 "HEAD /microsoft/deberta-base-mnli/resolve/main/config.json HTTP/1.1" 200 0
-14-40-2023 14:40:15 urllib3.connectionpool:DEBUG:https://huggingface.co:443 "HEAD /meta-llama/Llama-2-7b-chat-hf/resolve/main/tokenizer_config.json HTTP/1.1" 200 0
