@@ -11,7 +11,7 @@ Article Authors: Wei Jie, LiangYi Wang
 
 # Project Description
 
-With the rapid pace of human life, many people are facing a lot of pressure in life. As a result, they have more or less certain mental diseases. The main purpose of this project is to use the grand prophecy model to talk to humans and identify whether people have some negative emotions in their conversations. If we detect negative emotions in the user, our chatbot needs to give the user some suggestions to help them improve their mood.
+With the rapid pace of human life, many people are facing a lot of pressure in life. As a result, they have more or less certain mental diseases. The main purpose of this project is to use the Large Language model to talk to humans and identify whether people have some negative emotions in their conversations. If we detect negative emotions in the user, our chatbot needs to give the user some suggestions to help them improve their mood.
 
 # How to Use
 
@@ -82,4 +82,4 @@ As the experiment 1 shows when the user mentioned he feels down today, the chatb
 
 # Future Work
 
-Now our chatbot has been able to effectively identify people's emotions and provide some suggestions to our users to help them improve their mood when they have negative emotions. In the future, we hope to access some psychological medical models to provide long-term psychological services for our users. Long-term conversations with our Grand Prophecy model and the intervention of psychomedical models can help users diagnose if they have some serious mental illness.
+Now our chatbot has been able to effectively identify people's emotions and provide some suggestions to our users to help them improve their mood when they have negative emotions. In the future, we hope to access some psychological medical models to provide long-term psychological services for our users. Long-term conversations with our Large Language Model and the intervention of psychomedical models can help users diagnose if they have some serious mental illness.
